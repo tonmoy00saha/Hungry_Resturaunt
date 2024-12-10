@@ -14,10 +14,12 @@ import SectionTitle from '../SectionTitle/SectionTitle';
 const Category = () => {
     return (
         <div className='my-12'>
-            <SectionTitle
-            heading={"---From 11:00am to 10:00pm---"}
-            subheading={"ORDER ONLINE"}
-            ></SectionTitle>
+            <section className='my-16'>
+                <SectionTitle
+                    heading={"---From 11:00am to 10:00pm---"}
+                    subheading={"ORDER ONLINE"}
+                ></SectionTitle>
+            </section>
             <Swiper
                 slidesPerView={4}
                 spaceBetween={30}
@@ -29,15 +31,15 @@ const Category = () => {
                 className="mySwiper"
             >
                 <SwiperSlide><img src={slide1} alt="" />
-                <h3 className='text-3xl -mt-12 text-white text-center cinzel'>SALADS</h3></SwiperSlide>
+                    <h3 className='text-3xl -mt-12 text-white text-center cinzel'>SALADS</h3></SwiperSlide>
                 <SwiperSlide><img src={slide2} alt="" />
-                <h3 className='text-3xl -mt-12 text-white text-center cinzel'>PIZZAS</h3></SwiperSlide>
+                    <h3 className='text-3xl -mt-12 text-white text-center cinzel'>PIZZAS</h3></SwiperSlide>
                 <SwiperSlide><img src={slide3} alt="" />
-                <h3 className='text-3xl -mt-12 text-white text-center cinzel'>SOUPS</h3></SwiperSlide>
+                    <h3 className='text-3xl -mt-12 text-white text-center cinzel'>SOUPS</h3></SwiperSlide>
                 <SwiperSlide><img src={slide4} alt="" />
-                <h3 className='text-3xl -mt-12 text-white text-center cinzel'>DESERTS</h3></SwiperSlide>
+                    <h3 className='text-3xl -mt-12 text-white text-center cinzel'>DESERTS</h3></SwiperSlide>
                 <SwiperSlide><img src={slide5} alt="" />
-                <h3 className='text-3xl -mt-12 text-white text-center cinzel'>SALAD</h3></SwiperSlide>
+                    <h3 className='text-3xl -mt-12 text-white text-center cinzel'>SALAD</h3></SwiperSlide>
 
             </Swiper>
         </div>
