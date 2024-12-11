@@ -3,13 +3,13 @@ import SectionTitle from "../SectionTitle/SectionTitle";
 import MenuItem from "../Pages/Shared/MenuItem/MenuItem";
 
 
-const PopularMenu = () => {
+const PopularMenu = ({select,heading, subheading}) => {
     const [menu, setMenu] = useState([]);
     useEffect(()=>{
         fetch('menu.json')
         .then(res=>res.json())
         .then(data=> {
-            const popularItems = data.filter(item=> item.category === 'popular');
+            const popularItems = data.filter(item=> item.category === select);
             setMenu(popularItems);
         });
     },[])
@@ -17,8 +17,8 @@ const PopularMenu = () => {
         <div>
             <section className="my-16">
                 <SectionTitle
-                heading={"---Check it out---"}
-                subheading={"FROM OUR MENU"}
+                heading={heading}
+                subheading={subheading}
                 ></SectionTitle>
                 <div className="grid md:grid-cols-2 gap-6 mt-12">
                     {

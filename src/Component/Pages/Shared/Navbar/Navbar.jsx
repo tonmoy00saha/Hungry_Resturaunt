@@ -3,11 +3,11 @@ import '../Navbar/Navbar.css'
 const Navbar = () => {
     const navOptions =
         <>
-           <NavLink to="/">HOME</NavLink>
-           <Link>CONTACT US</Link>
-           <Link>DASHBOARD</Link>
-           <Link>DASHBOARD</Link>
-           <Link>OUR SHOP</Link>
+            <li><NavLink to="/">HOME</NavLink></li>
+            <li><Link>CONTACT US</Link></li>
+            <li><Link>DASHBOARD</Link></li>
+            <li><Link to="/menu">Our Menu</Link></li>
+            <li><Link to="/order">Order Food</Link></li>
         </>
     return (
         <div className="navbar fixed z-10 bg-opacity-30 bg-[#151515] md:flex md:justify-between max-w-screen-xl text-white">
@@ -23,14 +23,14 @@ const Navbar = () => {
                 <a className="btn btn-ghost normal-case"><span className="text-3xl font-black">HUNGRY</span><span className="text-2xl font-bold">RESTAURANT</span></a>
             </div>
             <div >
-            <div className=" hidden lg:flex">
-                <ul className="menu menu-horizontal px-1 text-lg font-extrabold gap-3">
-                    {navOptions}
-                </ul>
-            </div>
-            <div >
-                <a className="btn">Get started</a>
-            </div>
+                <div className=" hidden lg:flex">
+                    <ul className="menu menu-horizontal px-1 text-lg font-extrabold gap-3">
+                        {navOptions}
+                    </ul>
+                </div>
+                <div >
+                    <a className="btn">Get started</a>
+                </div>
             </div>
         </div>
     );
