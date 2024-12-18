@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import SectionTitle from "../SectionTitle/SectionTitle";
 import MenuItem from "../Pages/Shared/MenuItem/MenuItem";
+import { Link } from "react-router-dom";
 
 
 const PopularMenu = ({select,heading, subheading}) => {
@@ -29,7 +30,8 @@ const PopularMenu = ({select,heading, subheading}) => {
                     }
                 </div>
                 <div className="text-center mt-8">
-                <button className="btn btn-outline border-0 border-b-4 ">View Full Menu</button>
+               
+                    <Link to={`/order/${select}`}> <button className="btn btn-outline border-0 border-b-4 ">Order Now</button></Link>
                 </div>
             </section>
         </div>
