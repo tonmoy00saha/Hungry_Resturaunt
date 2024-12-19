@@ -3,23 +3,27 @@ import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-s
 import { Helmet } from "react-helmet";
 import authenticationimg from '../../../assets/others/authentication1.png';
 import background from '../../../assets/others/authentication.png'
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { AuthContext } from "../../../Providers/AuthProvider";
+import { Link } from "react-router-dom";
 const Login = () => {
     const myStyle = {
         backgroundImage: `url(${background})`,
     }
     const captchaRef = useRef(null);
     const [disabled, setDisabled] = useState(true);
-
+    const {signIn} = useContext(AuthContext);
     const handleLogin = e => {
         e.preventDefault();
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
-        console.log(email, password);
+        signIn(email, password)
+        .then(result =>{
+            const user = result.user;
+            console.log(user);
+        })
 
-
-    
     }
     const handleCaptcha = e =>{
         const user_captcha_value = captchaRef.current.value;
@@ -46,7 +50,7 @@ const Login = () => {
                         <img src={authenticationimg} alt="" />
                     </div>
                     <form onSubmit={handleLogin} className="card flex-shrink-0 w-full max-w-sm " id="">
-                        <h2 className="text-3xl font-semibold text-center">Login</h2>
+                        <h2 className="text-3xl font-bold text-center">Login</h2>
                         <div className="card-body">
                             <div className="form-control">
                                 <label className="label">
@@ -76,7 +80,9 @@ const Login = () => {
                                 <button disabled={disabled} className="btn bg-[#D1A054B3] text-white">Login</button>
                             </div>
                         </div>
+                        <p className="text-center text-[#D1A054]"><small>New Here? <Link to="/signup">Create an account</Link></small></p>
                     </form>
+                   
                 </div>
             </div>
         </div>
