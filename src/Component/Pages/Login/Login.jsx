@@ -1,43 +1,67 @@
-import { IoMdCheckmark } from "react-icons/io";
+
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import { Helmet } from "react-helmet";
 import authenticationimg from '../../../assets/others/authentication1.png';
 import background from '../../../assets/others/authentication.png'
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from "../../../Providers/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData, useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 const Login = () => {
     const myStyle = {
         backgroundImage: `url(${background})`,
-    }
-    const captchaRef = useRef(null);
+    };
+
     const [disabled, setDisabled] = useState(true);
-    const {signIn} = useContext(AuthContext);
+    const { signIn } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const from = location.state?.from?.pathname || "/";
+
+
     const handleLogin = e => {
         e.preventDefault();
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
         signIn(email, password)
-        .then(result =>{
-            const user = result.user;
-            console.log(user);
-        })
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                Swal.fire({
+                    title: "User Login Successful",
+                    showClass: {
+                        popup: `
+                    animate__animated
+                    animate__fadeInUp
+                    animate__faster
+                  `
+                    },
+                    hideClass: {
+                        popup: `
+                    animate__animated
+                    animate__fadeOutDown
+                    animate__faster
+                  `
+                    }
+                });
+                navigate(from, { replace: true });
+            })
 
     }
-    const handleCaptcha = e =>{
-        const user_captcha_value = captchaRef.current.value;
-        if(validateCaptcha(user_captcha_value)==true){
+    const handleCaptcha = e => {
+        const user_captcha_value = e.target.value;
+        if (validateCaptcha(user_captcha_value) == true) {
             setDisabled(false);
         }
-        else{
+        else {
             setDisabled(true);
         }
     }
-
-    useEffect(()=>{
+    useEffect(() => {
         loadCaptchaEnginge(6);
-    },[])
+    }, [])
 
     return (
         <div>
@@ -71,10 +95,7 @@ const Login = () => {
                                 <label className="label">
                                     <LoadCanvasTemplate />
                                 </label>
-                                <div className="flex">
-                                <input ref={captchaRef}  type="text" name="captcha" placeholder="Type the captcha above" className="input input-bordered w-full" />
-                                <button className="btn p-4 border-0" onClick={handleCaptcha}><IoMdCheckmark></IoMdCheckmark></button>
-                                </div>
+                                <input onBlur={handleCaptcha} type="text" name="captcha" placeholder="Type the captcha above" className="input input-bordered " />
                             </div>
                             <div className="form-control mt-6">
                                 <button disabled={disabled} className="btn bg-[#D1A054B3] text-white">Login</button>
@@ -82,7 +103,7 @@ const Login = () => {
                         </div>
                         <p className="text-center text-[#D1A054]"><small>New Here? <Link to="/signup">Create an account</Link></small></p>
                     </form>
-                   
+
                 </div>
             </div>
         </div>

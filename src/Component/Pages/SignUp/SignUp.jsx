@@ -3,7 +3,10 @@ import { useForm } from "react-hook-form";
 
 import background from '../../../assets/others/authentication.png'
 import authenticationimg from '../../../assets/others/authentication1.png';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import {AuthContext} from '../../../Providers/AuthProvider'
+import Swal from "sweetalert2";
 const SignUp = () => {
     const myStyle = {
         backgroundImage: `url(${background})`,
@@ -12,11 +15,33 @@ const SignUp = () => {
     const {
         register,
         handleSubmit,
-        watch,
+        reset,
         formState: { errors },
     } = useForm();
+
+    const {createUser, updateUserProfile} = useContext(AuthContext);
+    const navigate = useNavigate();
     const onSubmit = (data) => {
-        console.log(data);
+        // console.log(data);
+        createUser(data.email, data.password)
+        .then(result =>{
+            const loggedUser = result.user;
+            // console.log(loggedUser);
+            updateUserProfile(data.name, data.photourl)
+            .then(()=>{
+                console.log('User Profile info updated');
+                reset();
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "User created successfully",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+                  navigate('/');
+            })
+            .then(error=>console.log(error))
+        })
     }
 
 
@@ -50,11 +75,23 @@ const SignUp = () => {
                             </div>
                             <div className="form-control">
                                 <label className="label">
+                                    <span className="label-text">Photo URL</span>
+                                </label>
+                                <input type="text" {...register("photourl",  {required: true})} placeholder="Photo URL" className="input input-bordered" />
+                                {errors.photourl && <span className="text-red-600">**This field is required**</span>}
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
                                     <span className="label-text">Password</span>
                                 </label>
-                                <input type="password" {...register("password", {required: true, minLength:6})} placeholder="password" className="input input-bordered" />
+                                <input type="password" {...register("password", {
+                                    required: true,
+                                     minLength:6,
+                                    pattern: /(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]/
+                                })} placeholder="password" className="input input-bordered" />
                                 {errors.password?.type === 'required' && <span className="text-red-600">**This field is required**</span>}
-                                {errors.password?.type === 'minLength' && <span className="text-red-600">**Minimum Length 6 character**</span>}
+                                {errors.password?.type === 'minLength' && <span className="text-red-600">**Password must be 6 characters**</span>}
+                                {errors.password?.type === 'pattern' && <span className="text-red-600">**Password must have one uppercase,one lowercase one number and one special character**</span>}
 
                                 <label className="label">
                                     <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
