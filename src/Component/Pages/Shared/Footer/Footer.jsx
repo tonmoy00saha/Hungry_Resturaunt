@@ -5,7 +5,7 @@ import { FaTwitter } from "react-icons/fa6";
 const Footer = () => {
     return (
         <footer >
-            <div className=" bg-[#1F2937] text-neutral-content p-10 flex justify-center gap-80">
+            <div className=" bg-[#1F2937] text-neutral-content p-10 flex justify-center gap-80 mt-14">
               
                     <div >
                         <h2 className="text-3xl font-medium text-center">CONTACT US</h2>
