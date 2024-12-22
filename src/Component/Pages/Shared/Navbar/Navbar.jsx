@@ -3,8 +3,10 @@ import { FaCartPlus } from "react-icons/fa6";
 import '../Navbar/Navbar.css'
 import { useContext } from "react";
 import { AuthContext } from "../../../../Providers/AuthProvider";
+import useCart from "../../../../hooks/useCart";
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
+    const [cart] = useCart();
     const handleLogOut = () => {
         logOut()
             .then(() => { })
@@ -13,14 +15,13 @@ const Navbar = () => {
     const navOptions =
         <>
             <li><NavLink to="/">Home</NavLink></li>
-            <li><Link>Contact Us</Link></li>
             <li><Link to="/secret">Secret</Link></li>
             <li><Link to="/menu">Our Menu</Link></li>
             <li><Link to="/order/salad">Order Food</Link></li>
-            <li><Link to="/">
+            <li><Link to="/dashboard/cart">
                 <button className="btn gap-2">
                     <FaCartPlus></FaCartPlus>
-                    <div className="badge badge-secondary">+0</div>
+                    <div className="badge badge-secondary">+{cart.length}</div>
                 </button>
             </Link></li>
 
