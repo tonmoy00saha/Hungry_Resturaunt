@@ -5,12 +5,16 @@ import background from '../../../assets/others/authentication.png'
 import authenticationimg from '../../../assets/others/authentication1.png';
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import {AuthContext} from '../../../Providers/AuthProvider'
+import { AuthContext } from '../../../Providers/AuthProvider'
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import SocialLogin from "../../SocialLogin/SocialLogin";
 const SignUp = () => {
     const myStyle = {
         backgroundImage: `url(${background})`,
     }
+
+    const axiosPublic = useAxiosPublic();
 
     const {
         register,
@@ -19,29 +23,40 @@ const SignUp = () => {
         formState: { errors },
     } = useForm();
 
-    const {createUser, updateUserProfile} = useContext(AuthContext);
+    const { createUser, updateUserProfile } = useContext(AuthContext);
     const navigate = useNavigate();
     const onSubmit = (data) => {
         // console.log(data);
         createUser(data.email, data.password)
-        .then(result =>{
-            const loggedUser = result.user;
-            // console.log(loggedUser);
-            updateUserProfile(data.name, data.photourl)
-            .then(()=>{
-                console.log('User Profile info updated');
-                reset();
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "User created successfully",
-                    showConfirmButton: false,
-                    timer: 1500
-                  });
-                  navigate('/');
+            .then(result => {
+                const loggedUser = result.user;
+
+                updateUserProfile(data.name, data.photourl)
+                    .then(() => {
+                        // create user entry in the database
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email
+                        }
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log('user created to the database');
+                                    reset();
+                                    Swal.fire({
+                                        position: "top-end",
+                                        icon: "success",
+                                        title: "User created successfully",
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    navigate('/');
+                                }
+                            })
+
+                    })
+                    .then(error => console.log(error))
             })
-            .then(error=>console.log(error))
-        })
     }
 
 
@@ -62,7 +77,7 @@ const SignUp = () => {
                                 <label className="label">
                                     <span className="label-text">Name</span>
                                 </label>
-                                <input type="text" {...register("name", {required: true})} placeholder="Your Name" className="input input-bordered" />
+                                <input type="text" {...register("name", { required: true })} placeholder="Your Name" className="input input-bordered" />
                                 {errors.name && <span className="text-red-600">**This field is required**</span>}
 
                             </div>
@@ -70,14 +85,14 @@ const SignUp = () => {
                                 <label className="label">
                                     <span className="label-text">Email</span>
                                 </label>
-                                <input type="text" {...register("email",  {required: true})} placeholder="email" className="input input-bordered" />
+                                <input type="text" {...register("email", { required: true })} placeholder="email" className="input input-bordered" />
                                 {errors.email && <span className="text-red-600">**This field is required**</span>}
                             </div>
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Photo URL</span>
                                 </label>
-                                <input type="text" {...register("photourl",  {required: true})} placeholder="Photo URL" className="input input-bordered" />
+                                <input type="text" {...register("photourl", { required: true })} placeholder="Photo URL" className="input input-bordered" />
                                 {errors.photourl && <span className="text-red-600">**This field is required**</span>}
                             </div>
                             <div className="form-control">
@@ -86,7 +101,7 @@ const SignUp = () => {
                                 </label>
                                 <input type="password" {...register("password", {
                                     required: true,
-                                     minLength:6,
+                                    minLength: 6,
                                     pattern: /(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]/
                                 })} placeholder="password" className="input input-bordered" />
                                 {errors.password?.type === 'required' && <span className="text-red-600">**This field is required**</span>}
@@ -101,6 +116,10 @@ const SignUp = () => {
                             <div className="form-control mt-6">
                                 <button className="btn bg-[#D1A054B3] text-white">SignUp</button>
                             </div>
+                        </div>
+                        <div className='divider'></div>
+                        <div className='text-center'>
+                        <SocialLogin></SocialLogin>
                         </div>
                         <p className="text-center text-[#D1A054]"><small>Already registered? <Link to="/login">Go to log in</Link></small></p>
 

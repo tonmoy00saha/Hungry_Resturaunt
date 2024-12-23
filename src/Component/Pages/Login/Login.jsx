@@ -7,12 +7,13 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { Link, useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import SocialLogin from '../../SocialLogin/SocialLogin';
 const Login = () => {
     const myStyle = {
         backgroundImage: `url(${background})`,
     };
 
-    const [disabled, setDisabled] = useState(true);
+    const [disabled, setDisabled] = useState(false);
     const { signIn } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
@@ -25,40 +26,39 @@ const Login = () => {
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
+        const captcha = form.captcha.value;
         signIn(email, password)
             .then(result => {
-                const user = result.user;
-                console.log(user);
-                Swal.fire({
-                    title: "User Login Successful",
-                    showClass: {
-                        popup: `
-                    animate__animated
-                    animate__fadeInUp
-                    animate__faster
-                  `
-                    },
-                    hideClass: {
-                        popup: `
-                    animate__animated
-                    animate__fadeOutDown
-                    animate__faster
-                  `
-                    }
-                });
-                navigate(from, { replace: true });
+                console.log(result);
+                if (validateCaptcha(captcha) == true)
+                {
+                    Swal.fire({
+                        title: "User Login Successful",
+                        showClass: {
+                            popup: `
+                        animate__animated
+                        animate__fadeInUp
+                        animate__faster
+                      `
+                        },
+                        hideClass: {
+                            popup: `
+                        animate__animated
+                        animate__fadeOutDown
+                        animate__faster
+                      `
+                        }
+                    });
+                    navigate(from, { replace: true });
+                }
+                else
+                {
+                    setDisabled(true);
+                }
             })
 
     }
-    const handleCaptcha = e => {
-        const user_captcha_value = e.target.value;
-        if (validateCaptcha(user_captcha_value) == true) {
-            setDisabled(false);
-        }
-        else {
-            setDisabled(true);
-        }
-    }
+  
     useEffect(() => {
         loadCaptchaEnginge(6);
     }, [])
@@ -95,16 +95,22 @@ const Login = () => {
                                 <label className="label">
                                     <LoadCanvasTemplate />
                                 </label>
-                                <input onBlur={handleCaptcha} type="text" name="captcha" placeholder="Type the captcha above" className="input input-bordered " />
+                                <input  type="text" name="captcha" placeholder="Type the captcha above" className="input input-bordered " />
+                                { disabled && <p className='text-red-700'>***Incorrect Captcha***</p>}
                             </div>
                             <div className="form-control mt-6">
-                                <button disabled={disabled} className="btn bg-[#D1A054B3] text-white">Login</button>
+                                <button className="btn bg-[#D1A054B3] text-white">Login</button>
                             </div>
+                        </div>
+                        <div className='divider'></div>
+                        <div className='text-center'>
+                        <SocialLogin></SocialLogin>
                         </div>
                         <p className="text-center text-[#D1A054]"><small>New Here? <Link to="/signup">Create an account</Link></small></p>
                     </form>
 
                 </div>
+
             </div>
         </div>
     );
