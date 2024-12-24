@@ -7,12 +7,13 @@ import { Helmet } from "react-helmet";
 import { TiThMenu } from "react-icons/ti";
 import { TbBrandBooking } from "react-icons/tb";
 import { FaPeopleGroup } from "react-icons/fa6";
+import useAdmin from "../../hooks/useAdmin";
 
 
 const Dashboard = () => {
     const [cart] = useCart();
     // TODO: get isAdmin value from the database
-    const isAdmin = true;
+    const [isAdmin] = useAdmin();
     return (
         <div>
             <Helmet>
