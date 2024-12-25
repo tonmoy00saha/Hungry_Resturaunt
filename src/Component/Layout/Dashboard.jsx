@@ -19,7 +19,7 @@ const Dashboard = () => {
             <Helmet>
                 <title>Hungry | Dashboard</title>
             </Helmet>
-            <div className="flex gap-36 cinzel">
+            <div className="flex gap-12 cinzel">
                 <div className="w-64 min-h-screen bg-[#D1A054]">
                     <ul className="menu p-4 space-y-4">
                         {
