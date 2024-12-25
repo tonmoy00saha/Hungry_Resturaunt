@@ -16,6 +16,7 @@ import AddItems from "../Pages/Dashboard/AddItems/AddItems";
 import AdminRoutes from "./AdminRoutes";
 import ManageItems from "../Pages/Dashboard/ManageItems";
 import UpdateItem from "../Pages/Dashboard/UpdateItem/UpdateItem";
+import Payment from "../../Component/Pages/Dashboard/Payment/Payment"
 
 
 
@@ -47,8 +48,8 @@ export const router = createBrowserRouter([
             {
                 path: '/secret',
                 element: <PrivateRoute><Secret></Secret></PrivateRoute>
-            }
-
+            },
+            
         ]
     },
     {
@@ -64,6 +65,11 @@ export const router = createBrowserRouter([
             path:'users',
             element: <AdminRoutes><AllUsers></AllUsers></AdminRoutes>
         },
+        {
+            path: 'payment',
+            element: <Payment></Payment>
+        },
+
         {
             path: 'addItems',
             element: <AdminRoutes><AddItems></AddItems></AdminRoutes>
