@@ -74,8 +74,8 @@ const Dashboard = () => {
                                         </NavLink>
                                     </li>
                                     <li>
-                                        <NavLink to="/dashboard/bookings">
-                                            <FaList className="text-2xl font-semibold"></FaList> <h2 className="text-lg font-semibold text-white">My Bookings</h2>
+                                        <NavLink to="/dashboard/paymentHistory">
+                                            <FaList className="text-2xl font-semibold"></FaList> <h2 className="text-lg font-semibold text-white">Payment History</h2>
                                         </NavLink>
                                     </li>
                                 </>

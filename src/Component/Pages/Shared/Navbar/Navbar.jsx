@@ -4,8 +4,10 @@ import '../Navbar/Navbar.css'
 import { useContext } from "react";
 import { AuthContext } from "../../../../Providers/AuthProvider";
 import useCart from "../../../../hooks/useCart";
+import useAdmin from "../../../../hooks/useAdmin";
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
+    const [isAdmin] = useAdmin();
     const [cart] = useCart();
     const handleLogOut = () => {
         logOut()
@@ -15,9 +17,15 @@ const Navbar = () => {
     const navOptions =
         <>
             <li><NavLink to="/">Home</NavLink></li>
-            <li><Link to="/secret">Secret</Link></li>
+          
             <li><Link to="/menu">Our Menu</Link></li>
             <li><Link to="/order/salad">Order Food</Link></li>
+            {
+                user && isAdmin && <li><Link to="/dashboard/adminHome">Dashboard</Link></li>
+            }
+            {
+                user && !isAdmin && <li><Link to="/dashboard/userHome">Dashboard</Link></li>
+            }
             <li><Link to="/dashboard/cart">
                 <button className="btn gap-2">
                     <FaCartPlus></FaCartPlus>
